@@ -1,122 +1,112 @@
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Car, Users, Star, MapPin, Shield, Clock } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Car, MapPin, Clock, Star } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const Index = () => {
-  const navigate = useNavigate();
-
-  const features = [
-    {
-      icon: Clock,
-      title: 'Quick Rides',
-      description: 'Get a ride in minutes with our fast matching system'
-    },
-    {
-      icon: Shield,
-      title: 'Safe & Secure',
-      description: 'Verified drivers and secure payment options'
-    },
-    {
-      icon: Star,
-      title: 'Top Rated',
-      description: 'Highly rated drivers and excellent service'
-    },
-    {
-      icon: MapPin,
-      title: 'Real-time Tracking',
-      description: 'Track your ride in real-time on the map'
-    }
-  ];
+  const { user, signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-6">
+            <div className="flex items-center">
+              <Car className="h-8 w-8 text-blue-600 mr-2" />
+              <span className="text-2xl font-bold text-gray-900">RideHub</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              {user ? (
+                <>
+                  <span className="text-sm text-gray-700">Welcome, {user.email}</span>
+                  <Button onClick={signOut} variant="outline">
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <Link to="/auth">
+                  <Button>Get Started</Button>
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-800 mb-6">
-            Ride<span className="text-blue-600">Hub</span>
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Your reliable ride-hailing service. Safe, fast, and affordable rides at your fingertips.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              size="lg" 
-              className="bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg"
-              onClick={() => navigate('/auth')}
-            >
-              <Users className="mr-2" size={20} />
-              Get a Ride
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="px-8 py-3 text-lg"
-              onClick={() => navigate('/auth')}
-            >
-              <Car className="mr-2" size={20} />
-              Drive & Earn
-            </Button>
-          </div>
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {features.map((feature, index) => {
-            const IconComponent = feature.icon;
-            return (
-              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="mx-auto w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                    <IconComponent className="text-blue-600" size={24} />
-                  </div>
-                  <CardTitle className="text-lg">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>{feature.description}</CardDescription>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        {/* Stats Section */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-16">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <h3 className="text-3xl font-bold text-blue-600 mb-2">10M+</h3>
-              <p className="text-gray-600">Happy Riders</p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold text-green-600 mb-2">50K+</h3>
-              <p className="text-gray-600">Active Drivers</p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold text-purple-600 mb-2">100+</h3>
-              <p className="text-gray-600">Cities Covered</p>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">
-            Ready to get started?
-          </h2>
-          <p className="text-gray-600 mb-6">
-            Join millions of users who trust RideHub for their daily commute
+          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+            Your Ride, <span className="text-blue-600">Anytime</span>
+          </h1>
+          <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+            Connect with reliable drivers in your area. Fast, safe, and affordable transportation at your fingertips.
           </p>
-          <Button 
-            size="lg" 
-            className="bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg"
-            onClick={() => navigate('/auth')}
-          >
-            Sign Up Now
-          </Button>
+          <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
+            {!user && (
+              <Link to="/auth">
+                <Button size="lg" className="w-full sm:w-auto">
+                  Start Your Journey
+                </Button>
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Features */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader>
+              <MapPin className="h-8 w-8 text-blue-600 mb-2" />
+              <CardTitle>Easy Booking</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Book a ride in just a few taps. Set your pickup and destination with ease.
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <Clock className="h-8 w-8 text-green-600 mb-2" />
+              <CardTitle>Real-time Tracking</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Track your driver in real-time and get accurate arrival estimates.
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <Star className="h-8 w-8 text-yellow-600 mb-2" />
+              <CardTitle>Rated Drivers</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                All our drivers are verified and rated by the community for your safety.
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <Car className="h-8 w-8 text-purple-600 mb-2" />
+              <CardTitle>Drive & Earn</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Join as a driver and start earning money with flexible working hours.
+              </CardDescription>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
